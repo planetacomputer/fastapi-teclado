@@ -8,7 +8,7 @@ from storeapi.main import app
 from storeapi.routers.post import post_table, comment_table
 
 @pytest.fixture(scope="session")
-def anyio_backend() -> str:
+def anyio_backend():
     return "asyncio"
 
 @pytest.fixture()
@@ -16,7 +16,7 @@ def client() -> Generator:
     print("Creating client")
     yield TestClient(app)
 
-@pytest.fixture(auto_use=True)
+@pytest.fixture(autouse=True)
 async def db() -> Generator:
     post_table.clear()
     comment_table.clear()
