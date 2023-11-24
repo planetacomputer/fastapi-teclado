@@ -1,4 +1,5 @@
 from typing import Optional
+from functools import lru_cache
 from pydantic import BaseSettings
 
 class BaseConfig(BaseSettings):
@@ -24,3 +25,11 @@ class TestConfig(GlobalConfig):
     DB_FORCE_ROLL_BACK: bool = True
     class Config:
         env_prefix: str = "TEST_"
+
+@lru_cache()
+def get_config(env_state: str):
+    """Return config based on env_state."""
+    configs = {"dev": DevConfig, "prod": ProdConfig, "test": TestConfig}
+    return configs[env_state]()
+
+config = get_config(BaseConfig().ENV_STATE)
