@@ -1,6 +1,6 @@
 from typing import Optional
 from functools import lru_cache
-from pydantic import BaseSettings
+from pydantic.v1 import BaseSettings
 
 class BaseConfig(BaseSettings):
     ENV_STATE: Optional[str] = None
