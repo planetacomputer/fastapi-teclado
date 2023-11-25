@@ -5,8 +5,8 @@ import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
-from storeapi.routers.post import post_table, comment_table
 os.environ["ENV_STATE"] = "test"
+from storeapi.database import database # noqa: E402
 from storeapi.main import app # noqa: E402
 
 
@@ -20,10 +20,10 @@ def client() -> Generator:
     yield TestClient(app)
 
 @pytest.fixture(autouse=True)
-async def db() -> Generator:
-    post_table.clear()
-    comment_table.clear()
+async def db() -> AsyncGenerator:
+    await database.connect()
     yield
+    await database.disconnect()
 
 @pytest.fixture()
 async def async_client(client) -> AsyncGenerator:

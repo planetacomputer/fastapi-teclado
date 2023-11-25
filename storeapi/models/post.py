@@ -6,6 +6,9 @@ app = FastAPI()
 class UserPostIn(BaseModel):
     body: str
 
+    class Config:
+        orm_mode = True
+
 class UserPost(UserPostIn):
     id: int
 
@@ -15,6 +18,9 @@ class CommentIn(BaseModel):
 
 class Comment(CommentIn):
     id: int
+
+    class Config:
+        orm_mode = True
 
 class UserPostWithComments(BaseModel):
     post: UserPost
